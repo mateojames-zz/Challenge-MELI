@@ -18,7 +18,7 @@ def restore():
         for i in range(n):
             client.blpop('queue')
 
-    client.lpush('queue','Mapochin','Cerveza','Uno')
+    client.lpush('queue','Locura','Cerveza','Uno')
     lista=client.lrange('queue', 0, -1)
     return render_template("index.html", lista=lista)
 
