@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+    container_name: mateoredis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+
+  app:
+    build: ./queue
+    container_name: mateoapi
+    depends_on:
+      - redis
+    ports:
+    - "5000:5000"
