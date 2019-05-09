@@ -18,8 +18,9 @@ curl -H "Content-Type: application/json" -X POST http://192.168.99.100:5000/pop
 
 ## Push
 ```sh
-curl -H "Content-Type: application/json" -X POST -d "{\"msg\":\"Camello\"}" http://192.168.99.100:5000/push
+curl -H "Content-Type: application/json" -X POST -d "{\"msg\":\"CAMELLO\"}" http://192.168.99.100:5000/push
 ```
+Reemplazando CAMELLO con la palabra deseada a agregar.
 
 ## Count
 
