@@ -1,13 +1,13 @@
 # Docker Redis - Flask Restful API
 
-Para levantar los containes, por cmd(lado servidor):
+Para levantar los containes, por CMD (lado servidor):
 
 ```sh
 docker-compose build
 docker-compose up
 ```
 
-Para corroborar su funcionamiento, ademas abrimos una ventana de cmd (lado cliente) donde corremos los endpoints, y abrimos en un explorador la [Website Principal](http://192.168.99.100:5000/), donde despues de cada comando podemos dar refresh para ver los cambios concretados.
+Para corroborar su funcionamiento, ademas abrimos una ventana de CMD (lado cliente) donde corremos los endpoints, y abrimos en un explorador la [Website Principal](http://192.168.99.100:5000/), donde despues de cada comando podemos dar refresh para ver los cambios concretados.
 
 # Endpoints
 
