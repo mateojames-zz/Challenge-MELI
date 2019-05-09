@@ -22,14 +22,14 @@ def restore():
     lista=client.lrange('queue', 0, -1)
     return render_template("index.html", lista=lista)
 
-@app.route('/pop/<msg>', methods=["POST"])
-def popQueue(msg):
+@app.route('/pop/', methods=["POST"])
+def popQueue():
     if request.headers['Content-Type'] == 'application/json':
         client.blpop('queue')
 
         data = {
             'status'  : 'ok',
-            'message' : msg
+            'message' : 'Item popped'
         }
         js = json.dumps(data)
 
