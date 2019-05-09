@@ -14,7 +14,7 @@ def index():
 @app.route('/restore')
 def restore():
     n=client.llen('queue')
-    if n!=0:
+    if n>0:
         for i in range(n):
             client.blpop('queue')
 
@@ -22,7 +22,7 @@ def restore():
     lista=client.lrange('queue', 0, -1)
     return render_template("index.html", lista=lista)
 
-@app.route('/pop/', methods=["POST"])
+@app.route('/pop', methods=["POST"])
 def popQueue():
     if request.headers['Content-Type'] == 'application/json':
         client.blpop('queue')
