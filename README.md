@@ -16,7 +16,7 @@ docker-machine ip
 Abriendo un explorador, colocamos la ip obtenida de manera http://X.X.X.X:5000, remplzando las X con la ip (repetimos esto para los endpoints).
 Deberiamos ver un mensaje en el explorador como el siguiente:
 ```sh
-Esta es la lista de palabras
+Esta es la lista de palabras:
 ```
 En esta pagina podremos visualizar los cambios concretados a la cola actualizandola despues de cada comando realizado.
 
