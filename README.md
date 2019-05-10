@@ -8,7 +8,7 @@ docker-compose up
 ```
 
 Para corroborar su funcionamiento, ademas abrimos una ventana de CMD (lado cliente) donde corremos los endpoints.
-Si se esta usando Docker nativamente, accedemos a http://0.0.0.0:5000 en nuestro explorador.
+Si se esta usando Docker nativamente, accedemos a http://0.0.0.0:5000 o http://localhost:5000 en nuestro explorador.
 Si en cambio se esta usando una VM, corremos en una ventana de CMD el siguiente comando:
 ```sh
 docker-machine ip
