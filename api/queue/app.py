@@ -4,7 +4,18 @@ import redis
 from flask import Flask, request, json, Response, render_template
 
 app = Flask(__name__)
-client = redis.Redis(host = '192.168.99.100', port = 6379, db=0, charset="utf-8", decode_responses=True)
+client = redis.Redis(host = 'redis', port = 6379, db=0, charset="utf-8", decode_responses=True)
+
+def errorNoJs():
+    data = {
+        'status'  : 'super not ok',
+        'message' : 'Content type was not JSON'
+    }
+    js = json.dumps(data)
+    r = Response(js, status=401, mimetype='application/json')
+    return r
+
+
 
 @app.route('/')
 def index():
@@ -22,14 +33,15 @@ def restore():
     lista=client.lrange('queue', 0, -1)
     return render_template("index.html", lista=lista)
 
-@app.route('/pop', methods=["POST"])
+@app.route('/api/queue/pop', methods=["POST"])
 def popQueue():
-    if request.headers['Content-Type'] == 'application/json':
-        client.blpop('queue')
+    if client.llen('queue') > 0:
+        msg=client.lindex('queue', 0)
+        client.lpop('queue')
 
         data = {
             'status'  : 'ok',
-            'message' : 'Item popped'
+            'message' : msg
         }
         js = json.dumps(data)
 
@@ -37,21 +49,21 @@ def popQueue():
     else:
         data = {
             'status'  : 'super not ok',
-            'message' : 'Content type was not JSON'
+            'message' : 'Queue already empty'
         }
         js = json.dumps(data)
 
-        resp = Response(js, status=401, mimetype='application/json')
+        resp = Response(js, status=402, mimetype='application/json')
 
     return resp
 
 
-@app.route('/push', methods=["POST"])
+@app.route('/api/queue/push', methods=["POST"])
 def pushQueue():
     if request.headers['Content-Type'] == 'application/json':
         content = request.get_json()
         value = content['msg']
-        client.lpush('queue', value)
+        client.rpush('queue', value)
         
         data = {
             'status'  : 'ok'
@@ -60,24 +72,22 @@ def pushQueue():
 
         resp = Response(js, status=200, mimetype='application/json')
     else:
-        data = {
-            'status'  : 'super not ok',
-            'message' : 'Content type was not JSON'
-        }
-        js = json.dumps(data)
-        resp = Response(js, status=401, mimetype='application/json')
+        resp=errorNoJs()
     return resp
     
   
-@app.route('/count', methods=["GET"])
+@app.route('/api/queue/count', methods=["GET"])
 def countQueue():
-    count=client.llen('queue')
-    data = {
-        'status'  : 'ok',
-        'count' : count
-    }
-    js = json.dumps(data)
-    resp = Response(js, status=200, mimetype='application/json')
+    if request.headers['Content-Type'] == 'application/json':
+        count=client.llen('queue')
+        data = {
+            'status'  : 'ok',
+            'count' : count
+        }
+        js = json.dumps(data)
+        resp = Response(js, status=200, mimetype='application/json')
+    else:
+        resp=errorNoJs()
     return resp
 
  
