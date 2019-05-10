@@ -6,17 +6,6 @@ from flask import Flask, request, json, Response, render_template
 app = Flask(__name__)
 client = redis.Redis(host = 'redis', port = 6379, db=0, charset="utf-8", decode_responses=True)
 
-def errorNoJs():
-    data = {
-        'status'  : 'super not ok',
-        'message' : 'Content type was not JSON'
-    }
-    js = json.dumps(data)
-    r = Response(js, status=401, mimetype='application/json')
-    return r
-
-
-
 @app.route('/')
 def index():
     lista=client.lrange('queue', 0, -1)
@@ -72,22 +61,25 @@ def pushQueue():
 
         resp = Response(js, status=200, mimetype='application/json')
     else:
-        resp=errorNoJs()
+        data = {
+        'status'  : 'super not ok',
+        'message' : 'Content type was not JSON'
+        }
+        js = json.dumps(data)
+
+        resp = Response(js, status=401, mimetype='application/json')
     return resp
     
   
 @app.route('/api/queue/count', methods=["GET"])
 def countQueue():
-    if request.headers['Content-Type'] == 'application/json':
-        count=client.llen('queue')
-        data = {
-            'status'  : 'ok',
-            'count' : count
-        }
-        js = json.dumps(data)
-        resp = Response(js, status=200, mimetype='application/json')
-    else:
-        resp=errorNoJs()
+    count=client.llen('queue')
+    data = {
+        'status'  : 'ok',
+        'count' : count
+    }
+    js = json.dumps(data)
+    resp = Response(js, status=200, mimetype='application/json')
     return resp
 
  
